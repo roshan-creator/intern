@@ -1,12 +1,8 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "travel";
-
-$db=mysqli_connect($servername, $username, $password, $dbname);
+include 'connectDB.php';
 if(isset($_POST['Add']))
 {
+	echo "true";
     if(isset($_POST['email_ID']) && isset($_POST['pass']) && isset($_POST['confirm_Pass']) && isset($_POST['guide_Name'])) 
     {
         if($_POST['pass']===$_POST['confirm_Pass'])
@@ -18,6 +14,8 @@ if(isset($_POST['Add']))
             $sql ="INSERT INTO User (email_ID,pass,confirm_Pass,guide_Name) VALUES ('$EI','$P','$CP','$GN')";
 			if (mysqli_query($db, $sql)) {
 				echo '<script>alert("New record created successfully")</script>';
+				header('Location: Booking.php');
+				exit();
 			  } else {
 				echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 			}
@@ -44,27 +42,7 @@ if(isset($_POST['Add']))
 ?>
 
 
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "travel";
 
-$db=mysqli_connect($servername, $username, $password, $dbname);
-
-$EI=$_POST['email_ID'];
-$find = strrpos($EI,"@",0);
-$arr1 = str_split($EI,$find);
-$user=$arr1[0];
-$pass=$_POST['pass'];
-$sql1 ="INSERT INTO Info (username,pass) VALUES ('$user','$pass')";
-
-if (mysqli_query($db, $sql1)) {
-	echo '<script>alert("New record created successfully")</script>';
-  } else {
-	echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-}
-?>
 
 
 
@@ -171,7 +149,7 @@ if (mysqli_query($db, $sql1)) {
 					<div class="home_search_container">
 						<div class="home_search_title">Register Here</div>
 						<div class="home_search_content">
-							<form action="Booking.php" method="post" enctype="multipart/form-data" class="home_search_form" id="home_search_form">
+							<form action="" method="post" enctype="multipart/form-data" class="home_search_form" id="home_search_form">
 								<div class="d-flex flex-lg-row flex-column align-items-start justify-content-lg-between justify-content-start">
 									<input type="text" class="search_input search_input_1" placeholder="Email ID" name="email_ID" required="required">
 									<input type="password" class="search_input search_input_2" placeholder="Password" name="pass" required="required">
@@ -417,6 +395,30 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 	</footer>
 </div>
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "travel";
+
+$db=mysqli_connect($servername, $username, $password, $dbname);
+
+$EI=$_POST['email_ID'];
+$find = strrpos($EI,"@",0);
+echo "hello ".$find." <-value";
+if ($find<=0)
+	$find = 0;
+$arr1 = str_split($EI,$find);
+$user=$arr1[0];
+$pass=$_POST['pass'];
+$sql1 ="INSERT INTO Info (username,pass) VALUES ('$user','$pass')";
+
+if (mysqli_query($db, $sql1)) {
+	echo '<script>alert("New record created successfully")</script>';
+  } else {
+	echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+}
+?>
 
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="styles/bootstrap4/popper.js"></script>
